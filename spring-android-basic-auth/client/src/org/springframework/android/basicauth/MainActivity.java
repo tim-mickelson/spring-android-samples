@@ -93,7 +93,7 @@ public class MainActivity extends AbstractAsyncActivity {
 		@Override
 		protected Message doInBackground(Void... params) {
 			final String url = getString(R.string.base_uri) + "/getmessage";
-
+			System.out.println("MainActivity.doInBackground - url: "+url);
 			// Populate the HTTP Basic Authentitcation header with the username and password
 			HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
 			HttpHeaders requestHeaders = new HttpHeaders();
