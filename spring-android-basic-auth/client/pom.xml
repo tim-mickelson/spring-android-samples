@@ -15,7 +15,7 @@
 	</organization>
 
 	<properties>
-		<android-platform>17</android-platform>
+		<android-platform>18</android-platform>
 		<android-maven-plugin-version>3.6.0</android-maven-plugin-version>
 		<maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
 		<java-version>1.6</java-version>
@@ -25,35 +25,6 @@
 		<org.springframework.android-version>1.0.1.RELEASE</org.springframework.android-version>
 		<org.codehaus.jackson-version>1.9.11</org.codehaus.jackson-version>
 	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<version>${com.google.android-version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.android</groupId>
-			<artifactId>spring-android-rest-template</artifactId>
-			<version>${org.springframework.android-version}</version>
-		</dependency>
-		
-		<!-- Jackson JSON Processor -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${org.codehaus.jackson-version}</version>
-		</dependency>
-	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>springsource-repo</id>
-			<name>SpringSpring Repository</name>
-			<url>http://repo.springsource.org/release</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
@@ -69,6 +40,9 @@
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					<emulator>
+					    <wait>60000</wait>
+					</emulator>
 				</configuration>
 				<extensions>true</extensions>
 			</plugin>
@@ -90,6 +64,73 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.jayway.maven.plugins.android.generation2
+										</groupId>
+										<artifactId>
+											android-maven-plugin
+										</artifactId>
+										<versionRange>
+											[3.6.0,)
+										</versionRange>
+										<goals>
+											<goal>proguard</goal>
+											<goal>
+												generate-sources
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
-
+		
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${com.google.android-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.android</groupId>
+			<artifactId>spring-android-rest-template</artifactId>
+			<version>${org.springframework.android-version}</version>
+		</dependency>
+		
+		<!-- Jackson JSON Processor -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${org.codehaus.jackson-version}</version>
+		</dependency>
+	</dependencies>
+<!--
+	<repositories>
+		<repository>
+			<id>springsource-repo</id>
+			<name>SpringSpring Repository</name>
+			<url>http://repo.springsource.org/release</url>
+		</repository>
+	</repositories>
+-->
 </project>
