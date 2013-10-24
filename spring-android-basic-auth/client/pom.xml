@@ -105,7 +105,17 @@
 	</build>
 		
 	<dependencies>
-		<dependency>
+    	<dependency>
+		    <groupId>eu.mickelson.sb.ws</groupId>
+		    <artifactId>socialbullguard-wsbeans</artifactId>
+		    <version>0.0.1</version>    	
+    	</dependency>
+	    <dependency>
+            <groupId>com.socialpainkiller</groupId>
+            <artifactId>youconnect-entities</artifactId>
+            <version>0.3.18</version>
+        </dependency>
+        		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<version>${com.google.android-version}</version>

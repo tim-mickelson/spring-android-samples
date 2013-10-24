@@ -30,6 +30,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import com.socialpainkiller.entities.cubenotes.Task;
+
+import eu.mickelson.bg.ws.beans.TaskBean;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,14 +68,14 @@ public class MainActivity extends AbstractAsyncActivity {
 	// ***************************************
 	// Private methods
 	// ***************************************
-	private void displayResponse(Message response) {
-		Toast.makeText(this, response.getText(), Toast.LENGTH_LONG).show();
+	private void displayResponse(TaskBean response) {
+		Toast.makeText(this, response.getContent(), Toast.LENGTH_LONG).show();
 	}
 
 	// ***************************************
 	// Private classes
 	// ***************************************
-	private class FetchSecuredResourceTask extends AsyncTask<Void, Void, Message> {
+	private class FetchSecuredResourceTask extends AsyncTask<Void, Void, TaskBean> {
 
 		private String username;
 
@@ -91,7 +94,26 @@ public class MainActivity extends AbstractAsyncActivity {
 		}
 
 		@Override
-		protected Message doInBackground(Void... params) {
+		protected TaskBean doInBackground(Void... params){
+			final String url = "http://192.168.1.128:8090/wsbullguard/controller/tasks/test";
+			RestTemplate restTemplate = new RestTemplate();
+			restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+			try {
+				// Make the network request
+				Log.d(TAG, url);
+				ResponseEntity<TaskBean> response = restTemplate.exchange(url, HttpMethod.GET, null, TaskBean.class);
+				return response.getBody();
+			} catch (HttpClientErrorException e) {
+				Log.e(TAG, e.getLocalizedMessage(), e);
+				return null;
+			} catch (ResourceAccessException e) {
+				Log.e(TAG, e.getLocalizedMessage(), e);
+				return null;
+			}
+		}  // end function doInBackground
+		
+		protected Message doInBackgroundOld(Void... params) {
 			final String url = getString(R.string.base_uri) + "/getmessage";
 			System.out.println("MainActivity.doInBackground - url: "+url);
 			// Populate the HTTP Basic Authentitcation header with the username and password
@@ -119,7 +141,7 @@ public class MainActivity extends AbstractAsyncActivity {
 		}
 
 		@Override
-		protected void onPostExecute(Message result) {
+		protected void onPostExecute(TaskBean result) {
 			dismissProgressDialog();
 			displayResponse(result);
 		}
