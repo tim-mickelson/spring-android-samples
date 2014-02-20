@@ -115,7 +115,7 @@
             <artifactId>youconnect-entities</artifactId>
             <version>0.3.18</version>
         </dependency>
-        		<dependency>
+   		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<version>${com.google.android-version}</version>
@@ -126,7 +126,6 @@
 			<artifactId>spring-android-rest-template</artifactId>
 			<version>${org.springframework.android-version}</version>
 		</dependency>
-		
 		<!-- Jackson JSON Processor -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>

@@ -93,12 +93,51 @@ public class MainActivity extends AbstractAsyncActivity {
 			this.password = editText.getText().toString();
 		}
 
+		protected TaskBean doInBackground(Void... params) {
+			final String url = "http://192.168.2.111:8090/mickelson/rest/contacts/contactList"; //getString(R.string.base_uri) + "/getmessage";
+			System.out.println("MainActivity.doInBackground - url: "+url);
+			// Populate the HTTP Basic Authentitcation header with the username and password
+			HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+			HttpHeaders requestHeaders = new HttpHeaders();
+			requestHeaders.setAuthorization(authHeader);
+			requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+			// Create a new RestTemplate instance
+			RestTemplate restTemplate = new RestTemplate();
+			restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+			try {
+				// Make the network request
+				Log.d(TAG, url);
+				//ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<Object>(requestHeaders), Object.class);
+				ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(requestHeaders), Object.class);
+				if(response==null)
+					Log.d(TAG, "response is null");
+				else{
+					Log.d(TAG, "response is NOT null");
+					Log.d(TAG, response.toString());
+				}
+				//ResponseEntity<Message> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<Object>(requestHeaders), Message.class);
+				return null;
+			} catch (HttpClientErrorException e) {
+				Log.e(TAG, e.getLocalizedMessage(), e);
+				return null;//new Message(0, e.getStatusText(), e.getLocalizedMessage());
+			} catch (ResourceAccessException e) {
+				Log.e(TAG, e.getLocalizedMessage(), e);
+				return null; //new Message(0, e.getClass().getSimpleName(), e.getLocalizedMessage());
+			}
+		}
+/*		
+		
 		@Override
-		protected TaskBean doInBackground(Void... params){
+		protected TaskBean doInBackgroundNoAuth(Void... params){
 			final String url = "http://192.168.1.128:8090/wsbullguard/controller/tasks/test";
 			RestTemplate restTemplate = new RestTemplate();
 			restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
+			
+			
+			
 			try {
 				// Make the network request
 				Log.d(TAG, url);
@@ -112,7 +151,7 @@ public class MainActivity extends AbstractAsyncActivity {
 				return null;
 			}
 		}  // end function doInBackground
-		
+
 		protected Message doInBackgroundOld(Void... params) {
 			final String url = getString(R.string.base_uri) + "/getmessage";
 			System.out.println("MainActivity.doInBackground - url: "+url);
@@ -139,6 +178,7 @@ public class MainActivity extends AbstractAsyncActivity {
 				return new Message(0, e.getClass().getSimpleName(), e.getLocalizedMessage());
 			}
 		}
+*/		
 
 		@Override
 		protected void onPostExecute(TaskBean result) {

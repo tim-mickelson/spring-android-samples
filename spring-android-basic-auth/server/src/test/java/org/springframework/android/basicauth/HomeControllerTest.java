@@ -16,9 +16,18 @@
 
 package org.springframework.android.basicauth;
 
+import org.junit.Test;
+import org.springframework.android.config.ReadConfig;
+
 /**
  * @author Roy Clarkson
  */
 public class HomeControllerTest {
 
+	@Test
+	public void testConfig(){
+		ReadConfig rc = new ReadConfig();
+		System.out.println("url: "+rc.getUrl());
+	}
+	
 }
