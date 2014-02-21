@@ -17,6 +17,7 @@
 package org.springframework.android.basicauth;
 
 import java.util.Collections;
+import java.util.Map;
 
 import org.springframework.http.HttpAuthentication;
 import org.springframework.http.HttpBasicAuthentication;
@@ -105,28 +106,30 @@ public class MainActivity extends AbstractAsyncActivity {
 			// Create a new RestTemplate instance
 			RestTemplate restTemplate = new RestTemplate();
 			restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
-
+			TaskBean bean = new TaskBean();
 			try {
 				// Make the network request
-				Log.d(TAG, url);
+				Log.d(TAG, "MainActivity.doInBackground - url: "+url);
 				//ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<Object>(requestHeaders), Object.class);
-				ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(requestHeaders), Object.class);
+				ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<String>(requestHeaders), Map.class);
 				if(response==null)
 					Log.d(TAG, "response is null");
 				else{
 					Log.d(TAG, "response is NOT null");
 					Log.d(TAG, response.toString());
+					bean.setContent(response.getBody().toString());
 				}
 				//ResponseEntity<Message> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<Object>(requestHeaders), Message.class);
-				return null;
+				return bean;
 			} catch (HttpClientErrorException e) {
-				Log.e(TAG, e.getLocalizedMessage(), e);
-				return null;//new Message(0, e.getStatusText(), e.getLocalizedMessage());
+				Log.e(TAG, "HttpClientErrorException: "+e.getLocalizedMessage(), e);
+				return bean;//new Message(0, e.getStatusText(), e.getLocalizedMessage());
 			} catch (ResourceAccessException e) {
-				Log.e(TAG, e.getLocalizedMessage(), e);
-				return null; //new Message(0, e.getClass().getSimpleName(), e.getLocalizedMessage());
+				Log.e(TAG, "ResourceAccessException"+e.getLocalizedMessage(), e);
+				return bean; //new Message(0, e.getClass().getSimpleName(), e.getLocalizedMessage());
 			}
 		}
+		
 /*		
 		
 		@Override
